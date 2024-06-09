@@ -1,6 +1,5 @@
 import random
 import math
-#import validator
 import numpy as np
 
 
@@ -19,7 +18,6 @@ class Classifier:
             tempInstance = Instance(y[i], x[i]) #(label,features)
             trainInstances.append(tempInstance)
         self.trainingSet = trainInstances
-        #print("Training set loaded with", len(self.trainingSet), "instances")
 
     def test(self, testInstance):
         nearest_instance = None
@@ -53,8 +51,6 @@ class Validator:
             correct += np.count_nonzero(y_pred == y_test)
         return correct / len(X_subset) * 100
 
-
-
 def evaluation(features, x, y):
     classifier = Classifier()
     validator = Validator(classifier)
@@ -73,7 +69,8 @@ def forward_selection(num_features, x, y):
         for feature in range(0, num_features):
             if feature not in current_set_of_features:
                 accuracy = evaluation(current_set_of_features + [feature], x, y)
-                print(f"Using feature(s) {current_set_of_features + [feature]} accuracy is {accuracy:.1f}%")
+                newlist = [x + 1 for x in current_set_of_features + [feature]]
+                print(f"Using feature(s) {newlist} accuracy is {accuracy:.1f}%")
 
                 if accuracy > best_accuracy:
                     best_accuracy = accuracy
@@ -84,9 +81,10 @@ def forward_selection(num_features, x, y):
             if best_accuracy > best_overall_accuracy:
                 best_overall_accuracy = best_accuracy
                 best_feature_set = current_set_of_features.copy()
-            print(f"Best set of features so far: {current_set_of_features}, with accuracy {best_accuracy:.1f}%")
-
-    print(f"Finished search!! The best feature subset is {best_feature_set}, which has an accuracy of {best_overall_accuracy:.1f}%")
+            newlist = [x + 1 for x in current_set_of_features]
+            print(f"Best set of features so far: {newlist}, with accuracy {best_accuracy:.1f}%")
+    newlist = [x + 1 for x in best_feature_set]
+    print(f"Finished search!! The best feature subset is {newlist}, which has an accuracy of {best_overall_accuracy:.1f}%")
     return best_feature_set, best_overall_accuracy
 
 def backward_elimination(num_features, x, y):
@@ -94,7 +92,8 @@ def backward_elimination(num_features, x, y):
     best_overall_accuracy = evaluation(current_set_of_features, x, y)
     best_feature_set = current_set_of_features.copy()
 
-    print(f"Initial set {current_set_of_features} accuracy is {best_overall_accuracy:.1f}%")
+    newlist = [x + 1 for x in current_set_of_features]
+    print(f"Initial set {newlist} accuracy is {best_overall_accuracy:.1f}%")
     
     for i in range(num_features - 1):
         worst_feature = None
@@ -104,7 +103,8 @@ def backward_elimination(num_features, x, y):
             temp_set = current_set_of_features.copy()
             temp_set.remove(feature)
             accuracy = evaluation(temp_set, x, y)
-            print(f"Using feature(s) {temp_set} accuracy is {accuracy:.1f}%")
+            newlist = [x + 1 for x in temp_set]
+            print(f"Using feature(s) {newlist} accuracy is {accuracy:.1f}%")
             
             if accuracy > best_accuracy:
                 best_accuracy = accuracy
@@ -115,9 +115,11 @@ def backward_elimination(num_features, x, y):
             if best_accuracy > best_overall_accuracy:
                 best_overall_accuracy = best_accuracy
                 best_feature_set = current_set_of_features.copy()
-            print(f"Best set of features so far: {current_set_of_features}, with accuracy {best_accuracy:.1f}%")
+            newlist = [x + 1 for x in current_set_of_features]
+            print(f"Best set of features so far: {newlist}, with accuracy {best_accuracy:.1f}%")
 
-    print(f"Finished search!! The best feature subset is {best_feature_set}, which has an accuracy of {best_overall_accuracy:.1f}%")
+    newlist = [x + 1 for x in best_feature_set]
+    print(f"Finished search!! The best feature subset is {newlist}, which has an accuracy of {best_overall_accuracy:.1f}%")
     return best_feature_set, best_overall_accuracy
 
 def main():
