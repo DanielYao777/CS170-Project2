@@ -27,7 +27,8 @@ small_y = smalldata[:, 0]
 large_X = largedata[:, 1:]
 large_y = largedata[:, 0]
 
-classifier = KNeighborsClassifier(2)
+knum = int(input("Enter the number of neighbors: \n"))
+classifier = KNeighborsClassifier(knum)
 validator = Validator(classifier)
 
 accuracy = validator.evaluate(small_X, small_y, [2, 4, 6])
